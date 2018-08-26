@@ -31,6 +31,16 @@ class Enginee {
         this.listVilains.map(i => i.changeDiff(evt))
     }
 
+    updateLabels() {
+        var ctx = this.canvas.getContext("2d");
+        ctx.font = "20px Arial";
+        ctx.fillText(`Enemies: ${this.listVilains.length}`, 10, 50);
+        ctx.fillText(`Time: ${this.counter/1000}s`, 150, 50);
+        ctx.fillText(`Max. Vel: ${this.listVilains
+            .map(i => i.velocity)
+            .reduce((acc, cur) => acc > cur ? acc : cur)}m/s`, 300, 50);
+    }
+
     createVilain() {
         const position = {x: Math.random() * canvas.width,
                           y: Math.random() * canvas.height,}
@@ -39,18 +49,19 @@ class Enginee {
 
     render() {
         this.counter += this.tick
-        console.log(`Times: ${this.counter/1000}s`)
+        // console.log(`Times: ${this.counter/1000}s`)
         this.listVilains.map(i => i.updatePosition())
 
         // Add vilain
         if (this.counter % 1000 === 0) {
-            this.createVilain()
             this.listVilains.map(i => i.increaseVelocity())
+            this.createVilain()
         }
 
         this.clear()
 
         this.player.render()
         this.listVilains.map(i => i.render())
+        this.updateLabels()
     }
 }
