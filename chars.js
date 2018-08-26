@@ -53,7 +53,7 @@ class Player extends Sprite {
 
 class Vilans extends Sprite {
     constructor(canvas, target, position) {
-        const size = {r: 5, s_a: 0, e_a: 2*Math.PI}
+        const size = {r: 3, s_a: 0, e_a: 2*Math.PI}
         super(canvas, position, size)
         this.target = {x: 0, y: 0}
         if (target) this.target = target
@@ -65,12 +65,9 @@ class Vilans extends Sprite {
 
         // Add trace
         this.lastPositions = []
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < 4; i++) {
             this.lastPositions.push(position)
         }
-
-        console.log(this.lastPositions);
-        debugger
 
         this.changeDiff = this.changeDiff.bind(this)
         this.updatePosition = this.updatePosition.bind(this)
@@ -91,17 +88,39 @@ class Vilans extends Sprite {
 
     increaseVelocity() {
         this.velocity += 1
-        this.size.r += 1
+    }
+
+    animateTrace(context) {
+        context.strokeStyle = 'white';
+        context.lineWidth = 3;
+
+        const start = this.lastPositions[0]
+        const others = this.lastPositions.slice(1)
+
+        context.moveTo(start.x, start.y);
+        for (let i in others) {
+
+            if (i == others.length - 1) break
+
+            const a = others[i]
+            const b = others[parseInt(i)+1]
+            context.quadraticCurveTo(a.x, a.y, b.x, b.y);
+        }
+        context.stroke();
     }
 
     render() {
         if (canvas.getContext) {
             const ctx = canvas.getContext('2d')
             ctx.beginPath()
-            ctx.arc(this.position.x, this.position.y,
-                    this.size.r, this.size.s_a, this.size.e_a)
             ctx.fillStyle = '#FFF'
+            ctx.arc(this.position.x, this.position.y,
+                this.size.r, this.size.s_a, this.size.e_a)
+
+                // Render tail
+            this.animateTrace(ctx)
             ctx.fill()
+
         }
     }
 
