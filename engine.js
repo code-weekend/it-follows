@@ -1,7 +1,7 @@
 class Enginee {
     constructor(tick) {
         this.canvas = document.getElementById('canvas')
-        this.player = new Player(this.canvas)
+        this.player = new Player(this.canvas, this.randomPosition())
 
         this.listVilains = []
 
@@ -41,10 +41,13 @@ class Enginee {
             .reduce((acc, cur) => acc > cur ? acc : cur)}m/s`, 350, 50);
     }
 
+    randomPosition() {
+        return {x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,}
+    }
+
     createVilain() {
-        const position = {x: Math.random() * canvas.width,
-                          y: Math.random() * canvas.height,}
-        this.listVilains.push(new Vilans(this.canvas, this.player.position, position))
+        this.listVilains.push(new Vilans(this.canvas, this.player.position, this.randomPosition()))
     }
 
     render() {
