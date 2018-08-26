@@ -8,8 +8,6 @@ class Sprite {
         if (size) this.size = size
         if (canvas) this.canvas = canvas
 
-        console.log(this);
-
         this.render = this.render.bind(this)
     }
 
@@ -55,7 +53,7 @@ class Player extends Sprite {
 
 class Vilans extends Sprite {
     constructor(canvas, target, position) {
-        const size = {r: 1, s_a: 0, e_a: 2*Math.PI}
+        const size = {r: 5, s_a: 0, e_a: 2*Math.PI}
         super(canvas, position, size)
         this.target = {x: 0, y: 0}
         if (target) this.target = target
@@ -65,12 +63,20 @@ class Vilans extends Sprite {
         this.img = new Image()
         this.img.src = "./spem.svg"
 
+        // Add trace
+        this.lastPositions = []
+        for (let i = 0; i < 2; i++) {
+            this.lastPositions.push(position)
+        }
+
+        console.log(this.lastPositions);
+        debugger
+
         this.changeDiff = this.changeDiff.bind(this)
         this.updatePosition = this.updatePosition.bind(this)
     }
 
     changeDiff(evt, r) {
-        console.log(evt);
         const mousePosition = getMousePos(this.canvas, evt)
         if (!mousePosition){
             console.log(this.canvas, evt);
@@ -91,11 +97,18 @@ class Vilans extends Sprite {
     render() {
         if (canvas.getContext) {
             const ctx = canvas.getContext('2d')
-
-            ctx.drawImage(this.img,
-                this.position.x - this.img.width / 2,
-                this.position.y - this.img.height / 2)
+            ctx.beginPath()
+            ctx.arc(this.position.x, this.position.y,
+                    this.size.r, this.size.s_a, this.size.e_a)
+            ctx.fillStyle = '#FFF'
+            ctx.fill()
         }
+    }
+
+    addPosition(p) {
+        this.lastPositions.pop()
+        this.lastPositions.unshift(p)
+        console.log(this.lastPositions);
     }
 
     updatePosition() {
@@ -114,5 +127,6 @@ class Vilans extends Sprite {
         const position = {x: this.position.x + Math.round(pos.x),
                          y: this.position.y + Math.round(pos.y),}
         this.position = position
+        this.addPosition(position)
     }
 }
