@@ -34,11 +34,11 @@ class Enginee {
     updateLabels() {
         var ctx = this.canvas.getContext("2d");
         ctx.font = "20px Arial";
-        ctx.fillText(`Enemies: ${this.listVilains.length}`, 10, 50);
-        ctx.fillText(`Time: ${this.counter/1000}s`, 150, 50);
+        ctx.fillText(`Enemies: ${this.listVilains.length}`, 50, 50);
+        ctx.fillText(`Time: ${this.counter/1000}s`, 200, 50);
         ctx.fillText(`Max. Vel: ${this.listVilains
             .map(i => i.velocity)
-            .reduce((acc, cur) => acc > cur ? acc : cur)}m/s`, 300, 50);
+            .reduce((acc, cur) => acc > cur ? acc : cur)}m/s`, 350, 50);
     }
 
     createVilain() {

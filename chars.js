@@ -79,6 +79,7 @@ class Vilans extends Sprite {
 
     increaseVelocity() {
         this.velocity += 3
+        this.size.r += 1
     }
 
     render() {
