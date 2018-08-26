@@ -37,7 +37,7 @@ class Enginee {
         const colision = this.listVilains
             .map(i => diffPosition(i.position, pos))
             .map(i => vectorMod(i))
-            .map(i => console.log(`dist: ${i}`) || i)
+            // .map(i => console.log(`dist: ${i}`) || i)
             .reduce((acc, cur) => cur < this.player.size.r + 10 || acc, false)
         console.log(colision);
 
