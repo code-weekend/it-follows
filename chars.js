@@ -65,7 +65,7 @@ class Vilans extends Sprite {
 
         // Add trace
         this.lastPositions = []
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 3; i++) {
             this.lastPositions.push(position)
         }
 
@@ -131,8 +131,9 @@ class Vilans extends Sprite {
     }
 
     updatePosition() {
-        const err = {x: getRandInt(-5,5),
-                     y: getRandInt(-5,5),}
+        const errorValue = 8
+        const err = {x: getRandInt(-errorValue,errorValue),
+                     y: getRandInt(-errorValue,errorValue),}
         let diff = diffPosition(this.target, this.position)
         diff = {x: Math.round(diff.x),
                 y: Math.round(diff.y),}
