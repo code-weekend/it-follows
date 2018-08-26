@@ -47,11 +47,12 @@ class Enginee {
     updateLabels() {
         var ctx = this.canvas.getContext("2d");
         ctx.font = "20px Arial";
-        ctx.fillText(`Enemies: ${this.listVilains.length}`, 50, 50);
-        ctx.fillText(`Time: ${this.counter/1000}s`, 200, 50);
+        ctx.fillStyle = "#FFF";
+        ctx.fillText(`Spermatozoids: ${this.listVilains.length}`, 50, 50);
+        ctx.fillText(`Time: ${this.counter/1000}s`, 250, 50);
         ctx.fillText(`Max. Vel: ${this.listVilains
             .map(i => i.velocity)
-            .reduce((acc, cur) => acc > cur ? acc : cur)}m/s`, 350, 50);
+            .reduce((acc, cur) => acc > cur ? acc : cur)}nm/s`, 400, 50);
     }
 
     randomPosition() {
