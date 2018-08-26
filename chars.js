@@ -27,7 +27,7 @@ class Sprite {
 
 class Player extends Sprite {
     constructor(canvas, position) {
-        const size = {r: 30, s_a: 0, e_a: 2*Math.PI}
+        const size = {r: 15, s_a: 0, e_a: 2*Math.PI}
         super(canvas, position, size)
         this.size = size
         this.render = this.render.bind(this)
@@ -40,15 +40,8 @@ class Player extends Sprite {
         if (canvas.getContext) {
             const ctx = canvas.getContext('2d')
             ctx.drawImage(this.img,
-                this.position.x,
-                this.position.y)
-            // ctx.beginPath();
-            // ctx.arc(this.position.x,
-            //         this.position.y,
-            //         this.size.r,
-            //         this.size.s_a,
-            //         this.size.e_a);
-            // ctx.stroke();
+                this.position.x - this.size.r,
+                this.position.y - this.size.r)
         }
     }
 
@@ -62,7 +55,7 @@ class Player extends Sprite {
 
 class Vilans extends Sprite {
     constructor(canvas, target, position) {
-        const size = {r: 5, s_a: 0, e_a: 2*Math.PI}
+        const size = {r: 1, s_a: 0, e_a: 2*Math.PI}
         super(canvas, position, size)
         this.target = {x: 0, y: 0}
         if (target) this.target = target
@@ -85,8 +78,8 @@ class Vilans extends Sprite {
         }
 
         let position = mousePosition
-        position = {x: position.x - r,
-                    y: position.y - r,}
+        position = {x: position.x + r,
+                    y: position.y + r,}
         this.target = position
     }
 
@@ -100,8 +93,8 @@ class Vilans extends Sprite {
             const ctx = canvas.getContext('2d')
 
             ctx.drawImage(this.img,
-                this.position.x,
-                this.position.y)
+                this.position.x - this.img.width / 2,
+                this.position.y - this.img.height / 2)
         }
     }
 
@@ -111,11 +104,10 @@ class Vilans extends Sprite {
         let diff = diffPosition(this.target, this.position)
         diff = {x: Math.round(diff.x),
                 y: Math.round(diff.y),}
-        if (Math.abs(diff.x) < 10 && Math.abs(diff.y) < 10) return
         this.diff = diff
 
         // get next position using a unit vector
-        let mod = Math.sqrt(this.diff.x**2 + this.diff.y**2)
+        let mod = vectorMod(this.diff)
         if (!mod) mod = 1
         const pos = {x: (this.diff.x / mod * this.velocity) + err.x,
                      y: (this.diff.y / mod * this.velocity) + err.y,}
