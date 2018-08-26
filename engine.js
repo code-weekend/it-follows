@@ -31,6 +31,19 @@ class Enginee {
         this.listVilains.map(i => i.changeDiff(evt, this.player.size.r))
     }
 
+    checkColision() {
+        const pos  = {x: this.player.position.x + this.player.size.r,
+                      y: this.player.position.y + this.player.size.r,}
+        const colision = this.listVilains
+            .map(i => diffPosition(i.position, pos))
+            .map(i => vectorMod(i))
+            .map(i => console.log(`dist: ${i}`) || i)
+            .reduce((acc, cur) => cur < this.player.size.r + 10 || acc, false)
+        console.log(colision);
+
+        return colision
+    }
+
     updateLabels() {
         var ctx = this.canvas.getContext("2d");
         ctx.font = "20px Arial";
@@ -47,7 +60,13 @@ class Enginee {
     }
 
     createVilain() {
-        this.listVilains.push(new Vilans(this.canvas, this.player.position, this.randomPosition()))
+        const pos  = {x: this.player.position.x + this.player.size.r,
+                      y: this.player.position.y + this.player.size.r,}
+        this.listVilains.push(new Vilans(this.canvas, pos, this.randomPosition()))
+    }
+
+    interval(int) {
+        this.interval = int
     }
 
     render() {
@@ -66,5 +85,11 @@ class Enginee {
         this.player.render()
         this.listVilains.map(i => i.render())
         this.updateLabels()
+
+        // colision check
+        if (this.checkColision()) {
+            clearInterval(this.interval)
+            setTimeout(() => alert("Congratz, you'll be a father :)"), 1)
+        }
     }
 }

@@ -25,6 +25,9 @@
         timeUpdate = 30
         const eng = new Enginee(timeUpdate)
 
-        const draw = () => setInterval(eng.render, timeUpdate)
+        const draw = () => {
+            int = setInterval(eng.render, timeUpdate)
+            eng.interval(int)
+        }
     </script>
 </html>
