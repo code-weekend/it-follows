@@ -28,7 +28,7 @@ class Enginee {
 
     events(evt) {
         this.player.followMouse(evt)
-        this.listVilains.map(i => i.changeDiff(evt))
+        this.listVilains.map(i => i.changeDiff(evt, this.player.size.r))
     }
 
     updateLabels() {

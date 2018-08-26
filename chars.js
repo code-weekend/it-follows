@@ -27,29 +27,36 @@ class Sprite {
 
 class Player extends Sprite {
     constructor(canvas, position) {
-        const size = {r: 40, s_a: 0, e_a: 2*Math.PI}
+        const size = {r: 30, s_a: 0, e_a: 2*Math.PI}
         super(canvas, position, size)
-
+        this.size = size
         this.render = this.render.bind(this)
         this.followMouse = this.followMouse.bind(this)
+        this.img = new Image()
+        this.img.src = "./ovule.svg"
     }
 
     render() {
         if (canvas.getContext) {
             const ctx = canvas.getContext('2d')
-
-            ctx.beginPath();
-            ctx.arc(this.position.x,
-                    this.position.y,
-                    this.size.r,
-                    this.size.s_a,
-                    this.size.e_a);
-            ctx.stroke();
+            ctx.drawImage(this.img,
+                this.position.x,
+                this.position.y)
+            // ctx.beginPath();
+            // ctx.arc(this.position.x,
+            //         this.position.y,
+            //         this.size.r,
+            //         this.size.s_a,
+            //         this.size.e_a);
+            // ctx.stroke();
         }
     }
 
     followMouse(evt) {
-        this.position = getMousePos(this.canvas, evt)
+        let position = getMousePos(this.canvas, evt)
+        position = {x: position.x - this.size.r,
+                    y: position.y - this.size.r,}
+        this.position = position
     }
 }
 
@@ -61,20 +68,26 @@ class Vilans extends Sprite {
         if (target) this.target = target
         this.diff = {x: 0, y: 0}
         this.velocity = 10
+
+        this.img = new Image()
+        this.img.src = "./spem.svg"
+
         this.changeDiff = this.changeDiff.bind(this)
         this.updatePosition = this.updatePosition.bind(this)
     }
 
-    changeDiff(evt) {
+    changeDiff(evt, r) {
         console.log(evt);
         const mousePosition = getMousePos(this.canvas, evt)
         if (!mousePosition){
             console.log(this.canvas, evt);
             return
         }
-        this.target = mousePosition
-        // console.log(this.target);
-        // this.updatePosition()
+
+        let position = mousePosition
+        position = {x: position.x - r,
+                    y: position.y - r,}
+        this.target = position
     }
 
     increaseVelocity() {
@@ -86,14 +99,9 @@ class Vilans extends Sprite {
         if (canvas.getContext) {
             const ctx = canvas.getContext('2d')
 
-            ctx.beginPath();
-            ctx.arc(this.position.x,
-                    this.position.y,
-                    this.size.r,
-                    this.size.s_a,
-                    this.size.e_a);
-            ctx.fill();
-            ctx.stroke();
+            ctx.drawImage(this.img,
+                this.position.x,
+                this.position.y)
         }
     }
 
