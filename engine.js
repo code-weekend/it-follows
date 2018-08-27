@@ -1,12 +1,8 @@
 class Enginee {
     constructor(tick) {
         this.canvas = document.getElementById('canvas')
-        this.player = new Player(this.canvas, this.randomPosition())
 
-        this.listVilains = []
-
-        this.tick = tick
-        this.counter = 0
+        this.start(tick)
 
         this.events = this.events.bind(this)
         this.render = this.render.bind(this)
@@ -14,6 +10,15 @@ class Enginee {
         // const ctx = this.canvas.getContext()
         this.canvas.width  = window.innerWidth;
         this.canvas.height = window.innerHeight;
+    }
+
+    start(tick) {
+        this.canvas = document.getElementById('canvas')
+        this.player = new Player(this.canvas, this.randomPosition())
+
+        this.listVilains = []
+        this.tick = tick
+        this.counter = 0
     }
 
     clear() {
@@ -90,6 +95,8 @@ class Enginee {
         if (this.checkColision()) {
             clearInterval(this.interval)
             setTimeout(() => alert("Congratz, you'll be a father :)"), 1)
+            this.start(this.tick) // reset game
+            this.interval = setInterval(this.render,  this.tick)
         }
     }
 }
