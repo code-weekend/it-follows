@@ -1,4 +1,4 @@
-class Enginee {
+class Engine {
     constructor(tick) {
         this.canvas = document.getElementById('canvas')
 
@@ -137,7 +137,7 @@ class Enginee {
         // colision check
         if (this.checkColision()) {
             clearInterval(this.interval)
-            setTimeout(() => alert("Congratz, you'll be a father :)"), 1)
+            setTimeout(() => alert("Congratz, you'll be a father :)"), 10)
 
             this.saveRecord() // save current status
             this.start(this.tick) // reset game
