@@ -19,6 +19,39 @@ class Enginee {
         this.listVilains = []
         this.tick = tick
         this.counter = 0
+
+        this.loadRecord()
+    }
+
+    loadRecord() {
+        // load records
+        const data = localStorage.getItem('record')
+        if (data) this.record = JSON.parse(data)
+    }
+
+    saveRecord() {
+        let time
+        let enemies
+
+        const numVilains = this.listVilains.length
+        const prevData = this.record
+        if (!prevData){
+            time = this.counter
+            enemies = numVilains
+        } else {
+            time = parseInt(prevData.time)
+            enemies = parseInt(prevData.enemies)
+
+            time = this.counter > time
+                ? this.counter
+                : time
+            enemies = numVilains > enemies
+                ? numVilains
+                : enemies
+        }
+
+        const data = JSON.stringify({ time, enemies })
+        localStorage.setItem('record', data)
     }
 
     clear() {
@@ -49,14 +82,24 @@ class Enginee {
     }
 
     updateLabels() {
-        var ctx = this.canvas.getContext("2d");
-        ctx.font = "20px Arial";
-        ctx.fillStyle = "#FFF";
-        ctx.fillText(`Spermatozoids: ${this.listVilains.length}`, 50, 50);
-        ctx.fillText(`Time: ${this.counter/1000}s`, 250, 50);
-        ctx.fillText(`Max. Vel: ${this.listVilains
-            .map(i => i.velocity)
-            .reduce((acc, cur) => acc > cur ? acc : cur)}nm/s`, 400, 50);
+        var ctx = this.canvas.getContext("2d")
+        ctx.font = "20px Arial"
+        ctx.fillStyle = "#FFF"
+        // FIrst line
+        ctx.fillText(`Spermatozoids: ${this.listVilains.length}`, 50, 50)
+        ctx.fillText(`Time: ${this.counter/1000}s`, 250, 50)
+
+        this.listVilains.length &&
+            ctx.fillText(`Max. Vel: ${this.listVilains
+                .map(i => i.velocity)
+                .reduce((acc, cur) => acc > cur ? acc : cur)}nm/s`, 400, 50)
+
+        ctx.font = "14px Arial"
+
+        // Records line
+        this.record &&
+            ctx.fillText(`Your record: ${this.record.enemies} spers. / ${this.record.time/1000}s`, 50, 90)
+            // ctx.fillText(`Time: ${this.counter/1000}s`, 250, 50);
     }
 
     randomPosition() {
@@ -95,6 +138,8 @@ class Enginee {
         if (this.checkColision()) {
             clearInterval(this.interval)
             setTimeout(() => alert("Congratz, you'll be a father :)"), 1)
+
+            this.saveRecord() // save current status
             this.start(this.tick) // reset game
             this.interval = setInterval(this.render,  this.tick)
         }
