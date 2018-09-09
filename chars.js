@@ -61,7 +61,7 @@ class Vilans extends Sprite {
         this.velocity = 10
 
         this.img = new Image()
-        this.img.src = "./spem.svg"
+        this.img.src = "./sperm.svg"
 
         // Add trace
         this.lastPositions = []
